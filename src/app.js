@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
