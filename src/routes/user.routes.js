@@ -19,4 +19,32 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  app.post(
+    '/api/createUser',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.createUser
+  );
+
+  app.get('/api/readAll', controller.readAll);
+
+  app.get('/api/readById/:id', controller.readById);
+
+  app.put(
+    '/api/updateUser/:id',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.updateUser
+  );
+
+  app.delete(
+    '/api/deleteUser/:id',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.deleteUser
+  );
+
+  app.delete(
+    '/api/deleteAll',
+    [authJwt.verifyToken, authJwt.isAdmin],
+    controller.deleteAll
+  );
 };
