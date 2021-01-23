@@ -13,7 +13,7 @@
   "name": "user-service",
   "description": "Simple user service with CRUD capabilities",
   "version": "1.0.0",
-  "main": "src/server.js",
+  "main": "server.js",
   "devDependencies": {
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
