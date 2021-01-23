@@ -1,8 +1,9 @@
 const express = require('express');
-
-const controller = require('../controllers/auth.controller');
+const axios = require('axios');
 
 const router = express.Router();
+
+const baseURL = 'http://localhost:7999';
 
 router.use(function(req, res, next) {
   res.header(
@@ -48,7 +49,18 @@ router.use(function(req, res, next) {
  *       500:
  *         description: Server Error
  */
-router.post('/signup', controller.signUp);
+router.post('/signup', (req, res) => {
+  let URL = baseURL + '/signup';
+
+  axios.post(URL, req.body)
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(err.response.data);
+    });
+});
 
 /**
  * @swagger
@@ -83,6 +95,16 @@ router.post('/signup', controller.signUp);
  *       500:
  *         description: Server Error
  */
-router.post('/signin', controller.signIn);
+router.post('/signin', (req, res) => {
+  let URL = baseURL + '/signin';
+
+  axios.post(URL, req.body)
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.send(err.response.data);
+    });
+});
 
 module.exports = router;

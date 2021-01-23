@@ -1,9 +1,9 @@
 const express = require('express');
-
-const { authJwt } = require('../middlewares');
-const controller = require('../controllers/user.controller');
+const axios = require('axios');
 
 const router = express.Router();
+
+const baseURL = 'http://localhost:8088';
 
 router.use(function(req, res, next) {
   res.header(
@@ -49,12 +49,31 @@ router.use(function(req, res, next) {
  *       500:
  *         description: Server Error
  */
-router.post(
-  '/createUser',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  controller.createUser
-);
+router.post('/createUser', (req, res) => {
+  let URL = baseURL + '/createUser';
 
+  if (!req.get('x-access-token')) {
+    res.send({
+      message: 'No token provided',
+    });
+    return;
+  }
+
+  let axiosConfig = {
+    headers: {
+      'x-access-token': req.get('x-access-token'),
+    }
+  }
+
+  axios.post(URL, req.body, axiosConfig)
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.send(err.response.data);
+    });
+});
 /**
  * @swagger
  * /user/readAll:
@@ -71,7 +90,20 @@ router.post(
  *       500:
  *         description: Server Error
  */
-router.get('/readAll', controller.readAll);
+
+router.get('/readAll', (req, res) => {
+  let URL = baseURL + '/readAll';
+
+  axios.get(URL, {
+    params: { ...req.query }, //Fetch datas from params
+  })
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.send(err.response.data);
+    });
+});
 
 /**
  * @swagger
@@ -96,7 +128,20 @@ router.get('/readAll', controller.readAll);
  *       500:
  *         description: Server Error
  */
-router.get('/readById/:id', controller.readById);
+router.get('/readById/:id', (req, res) => {
+  let { id } = req.params;
+  let URL = baseURL + '/readById/' + id;
+
+  axios.get(URL, {
+    params: { ...req.query }, //Fetch datas from params
+  })
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.send(err.response.data);
+    });
+});
 
 /**
  * @swagger
@@ -125,11 +170,31 @@ router.get('/readById/:id', controller.readById);
  *       500:
  *         description: Server Error
  */
-router.put(
-  '/updateUser/:id',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  controller.updateUser
-);
+router.put('/updateUser/:id', (req, res) => {
+  let { id } = req.params;
+  let URL = baseURL + '/updateUser/' + id;
+
+  if (!req.get('x-access-token')) {
+    res.send({
+      message: 'No token provided',
+    });
+    return;
+  }
+
+  let axiosConfig = {
+    headers: {
+      'x-access-token': req.get('x-access-token'),
+    }
+  }
+
+  axios.put(URL, req.body, axiosConfig)
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.send(err.response.data);
+    });
+});
 
 /**
  * @swagger
@@ -156,11 +221,31 @@ router.put(
  *       500:
  *         description: Server Error
  */
-router.delete(
-  '/deleteUser/:id',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  controller.deleteUser
-);
+router.delete('/deleteUser/:id', (req, res) => {
+  let { id } = req.params;
+  let URL = baseURL + '/deleteUser/' + id;
+
+  if (!req.get('x-access-token')) {
+    res.send({
+      message: 'No token provided',
+    });
+    return;
+  }
+
+  let axiosConfig = {
+    headers: {
+      'x-access-token': req.get('x-access-token'),
+    }
+  }
+
+  axios.delete(URL, req.body, axiosConfig)
+    .then(result => {
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.send(err.response.data);
+    });
+});
 
 /**
  * @swagger
@@ -178,10 +263,30 @@ router.delete(
  *       500:
  *         description: Server Error
  */
-router.delete(
-  '/deleteAll',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  controller.deleteAll
-);
+router.delete('/deleteAll', (req, res) => {
+  let { id } = req.params;
+  let URL = baseURL + '/deleteAll';
+
+  if (!req.get('x-access-token')) {
+    res.send({
+      message: 'No token provided',
+    });
+    return;
+  }
+
+  let axiosConfig = {
+    headers: {
+      'x-access-token': req.get('x-access-token'),
+    }
+  }
+
+  axios.delete(URL, req.body, axiosConfig)
+    .then(result => {
+      res.send(result.data || result.response.data);
+    })
+    .catch(err => {
+      res.send(err.response.data);
+    });
+});
 
 module.exports = router;
