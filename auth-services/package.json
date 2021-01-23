@@ -10,8 +10,8 @@
     "swagger-jsdoc": "^6.0.1",
     "swagger-ui-express": "^4.1.6"
   },
-  "name": "sejutacita-rest-api",
-  "description": "Simple REST API with CRUD capabilities",
+  "name": "auth-service",
+  "description": "Simple auth service",
   "version": "1.0.0",
   "main": "server.js",
   "devDependencies": {

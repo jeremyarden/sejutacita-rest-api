@@ -2,13 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const dbConfig = require('../config/db.config');
+const dbConfig = require('./config/db.config');
 
-const userEndpoint = require('./routes');
+const authEndpoint = require('./routes');
 
 const app = express();
 
-const PORT = process.env.USER_PORT || 8088;
+const PORT = process.env.USER_PORT || 7999;
 
 const corsOptions = {
   origin: 'http://localhost:8081',
@@ -20,13 +20,13 @@ app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/', userEndpoint);
+app.use('/', authEndpoint);
 
 app.listen(PORT, () => {
-  console.log(`User service running on port ${PORT}`);
+  console.log(`Auth service running on port ${PORT}`);
 });
 
-const db = require('../models');
+const db = require('./models');
 
 const Role = db.role;
 
