@@ -3,7 +3,7 @@ const axios = require('axios');
 
 const router = express.Router();
 
-const baseURL = 'http://localhost:7999';
+const baseURL = 'http://authapi:7999';
 
 router.use(function(req, res, next) {
   res.header(
