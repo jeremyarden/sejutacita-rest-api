@@ -49,6 +49,9 @@ spec:
         name: auth-api
         imagePullPolicy: Always
         resources: {}
+        env:
+          - name: MONGO_URL
+            value: mongo
         ports:
           - containerPort: 7999 
 status: {}
