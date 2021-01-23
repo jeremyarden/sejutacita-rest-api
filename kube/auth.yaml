@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: auth-pod
+spec:
+  containers:
+    - image: jeremyarden/sc-auth:latest
+      name: auth-api
+      imagePullPolicy: Always
+      resources: {}
+      ports:
+        - containerPort: 7999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authapi
+  labels:
+    run: authapi
+spec:
+  ports:
+  - port: 7999
+    protocol: TCP
+  selector:
+    app: authapi
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: authapi
+  name: authapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authapi
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: authapi
+    spec:
+      containers:
+      - image: jeremyarden/sc-auth:latest
+        name: auth-api
+        imagePullPolicy: Always
+        resources: {}
+        ports:
+          - containerPort: 7999 
+status: {}
